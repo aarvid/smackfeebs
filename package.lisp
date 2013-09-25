@@ -10,6 +10,7 @@
 ;;
 ;; also using ideas from The Feebs War  Gustavo Henrique Milaré GPLv3
 
+(in-package :cl-user)
 
 (defpackage  :smackfeebs
   (:nicknames :smeebs)
