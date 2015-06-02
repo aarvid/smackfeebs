@@ -308,8 +308,9 @@
     (dolist (feeb (playing-feebs planet))
       (unless (deadp feeb)
 	(let ((time (get-internal-run-time)))
-	  (setf (feeb-last-move  feeb)
-                (calculate-feeb-move feeb))
+	  (setf (feeb-last-move feeb)
+                (or (feeb-special-move feeb)
+                    (calculate-feeb-move feeb)))
 	  (setq time (- (get-internal-run-time) time))
 	  (unless (eq :error (feeb-last-move feeb))
             (incf total-time time))
@@ -318,6 +319,7 @@
     ;; Do all the feebs' moves, or perhaps abort the move according
     ;; to the time taken by the feeb.
     (dolist (feeb (playing-feebs planet))
+      (setf (feeb-peeking feeb) nil)
       (unless (or (deadp feeb)
                   (eq :error (feeb-last-move feeb)))
         (setf (feeb-move-aborted feeb)
@@ -342,6 +344,7 @@
     (feebs-restore-firepower planet)
     (compute-vision planet)
     (move-feebs planet)
+    (compute-vision planet)
     (incf (cycle planet))
     (archive-planet-cycle planet)))
 

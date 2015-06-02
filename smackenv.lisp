@@ -1,4 +1,5 @@
 (in-package :smackfeebs)
+
 (defparameter *active-feeb* nil)
 (defparameter *planets* nil)
 
@@ -101,23 +102,23 @@
   (current-square *active-feeb*))
 
 (defun api-rear-square ()
-  (rear-square  *active-feeb*))
+  (rear-square *active-feeb*))
 
 (defun api-left-square ()
-  (left-square  *active-feeb*))
+  (left-square *active-feeb*))
 
 (defun api-right-square ()
-  (right-square  *active-feeb*))
+  (right-square *active-feeb*))
 
 
 (defun api-vision-ahead ()
-  (vision-ahead  *active-feeb*))
+  (vision-ahead *active-feeb*))
 
 (defun api-vision-right ()
-  (vision-right  *active-feeb*))
+  (vision-right *active-feeb*))
 
 (defun api-vision-left ()
-  (vision-left  *active-feeb*))
+  (vision-left *active-feeb*))
 
 (defun api-default-brain ()
   :noop)
@@ -169,6 +170,16 @@
 (defun api-list-parameter-settings ()
   (mapcar (lambda (x) (list (first x) (second x)))
           (list-parameter-settings (ensure-planet))))
+
+(defun api-move (move)
+  (let ((planet (ensure-planet)))
+    (when (play-is-active planet)
+      (error "Cannot call move within an active game!"))
+    (let ((sv (feeb-special-move *active-feeb*)))
+      (setf (feeb-special-move *active-feeb*) move)
+      (unwind-protect
+           (play-one-cycle planet)
+        (setf (feeb-special-move *active-feeb*) sv)))))
 
 (defun api-play-cycle (&optional (count 1))
   (let ((planet (ensure-planet)))
@@ -295,6 +306,7 @@
     (smacklisp::print-scoreboard api-print-scoreboard)
     (smacklisp::test-feeb-brain api-test-feeb-brain)
     (smacklisp::list-parameter-settings api-list-parameter-settings)
+    (smacklisp::move api-move)
     (smacklisp::play-cycle api-play-cycle)
     (smacklisp::play-restart api-play-restart)
     (smacklisp::play-game api-play-game)

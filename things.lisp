@@ -143,6 +143,7 @@
    (lisp-env   :accessor feeb-lisp-env :initform (create-lisp-environment))
 
    (last-move  :accessor feeb-last-move :initform :noop)
+   (special-move  :accessor feeb-special-move :initform nil)
    (last-error  :accessor feeb-last-error :initform :noop)
    (move-time :accessor feeb-move-time :initform 0)
    (move-aborted  :accessor feeb-move-aborted :initform nil)
