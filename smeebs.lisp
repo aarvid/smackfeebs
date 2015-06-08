@@ -1,4 +1,4 @@
-(in-package :smackfeebs2)
+(in-package :smackfeebs)
 
 
 (defparameter *feeb-functions*
@@ -65,7 +65,7 @@
 (defun create-feeb (name)
   (let ((env (create-lisp-environment))
         (feeb (feebs:make-feeb name)))
-    (setf (feebs-base::feeb-lisp-env feeb)
+    (setf (feebs-base:feeb-lisp-env feeb)
           env)
     (publish-feeb-brain feeb (lambda ()
             :wait))
@@ -75,8 +75,11 @@
 
 
 (defun feeb-repl (feeb)
-  (let ((feebs::*active-feeb* feeb))
-    (clicl:repl (feebs-base::feeb-lisp-env feeb))))
+  (let ((feebs:*active-feeb* feeb)
+        (smacklisp:*smack-symbols* (feebs-base:feeb-lisp-env feeb)))
+    (smacklisp:smack)))
 
 (defun load-file (feeb file)
-  (clicl:load-file (feebs-base::feeb-lisp-env feeb) file))
+  (let ((feebs:*active-feeb* feeb)
+        (smacklisp:*smack-symbols* (feebs-base:feeb-lisp-env feeb)))
+    (smacklisp:load-file  file)))
