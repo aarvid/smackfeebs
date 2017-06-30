@@ -1,16 +1,11 @@
-(in-package :cl-user)
 
-(defpackage :smackfeebs-system
-  (:use :cl :asdf))
 
-(in-package :smackfeebs-system)
-
-(defsystem smackfeebs
+(defsystem "smackfeebs"
   :description "Planet of the Feebs - SmackLisp Version."
   :version "0.1"
   :author "Andy Peterson <andy.arvid@gmail.com>"
   :license "MIT"
-  :depends-on (#:alexandria #:smacklisp #:feebs)        
+  :depends-on ("alexandria" "smacklisp" "feebs")        
   :components
    ((:cl-source-file "package")
     (:cl-source-file "smeebs"  :depends-on ("package"))
